@@ -3,9 +3,11 @@ import Terminal from './components/Terminal'
 import "./App.css"
 import FileTree from './components/FileTree'
 import { socket } from './socket'
+import CodeEditor from './components/CodeEditor'
 
 const App = () => {
   const [fileTree,setFileTree]= useState([])
+  const [selectedFile,setSelectedFile]= useState({})
 
   const getFileTree=async()=>{
     try{
@@ -25,7 +27,15 @@ const App = () => {
       socket.off('file:refresh',getFileTree)
     }
   },[])
-
+  const clickFile=(name,path)=>{
+    let filePath=""
+    // let folder= fileTree
+    // for(const i of path){
+    //   filePath+= "/"+folder[i].name
+    //   folder=folder[i].children
+    // }
+    setSelectedFile({name:name,path:path})
+  }
   return (
     <div className='playground-container'>
       <div className="editor_header">
@@ -36,9 +46,14 @@ const App = () => {
 
       <div className="editor-container">
           <div className="files">
-                <FileTree tree={fileTree}/>
+                <FileTree tree={fileTree} clickFile={clickFile}/>
           </div>
-          <div className="editor"></div>
+          <div className="editor">
+            <div className='editor_file_header_name'>
+              {selectedFile?.path?.replaceAll("/"," > ")}
+          </div>
+              <CodeEditor selectedFile={selectedFile}/>
+          </div>
       </div>
 
       <div className='terminal-container'>

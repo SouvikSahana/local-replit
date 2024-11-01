@@ -1,30 +1,20 @@
 import React, { useLayoutEffect } from 'react'
 import "./FileTree.css"
+import FolderTree, { testData } from 'react-folder-tree';
+import 'react-folder-tree/dist/style.css'
+import { DiPython } from "react-icons/di";
+import FileStructure from "./FileStructure"
 
-const FileTreeNode=({fileName,Nodes})=>{
-    const isDir= !!Nodes
-    return(
-        <div style={{marginLeft:'10px'}}>
-            {fileName}
-            {Nodes && <ul>
-                    {Object.keys(Nodes).map(child=>{
-                        return(
-                            <li key={child}>
-                                <FileTreeNode fileName={child} Nodes={Nodes[child]} />
-                            </li>
-                        )
-                    })}
-                </ul>}
-        </div>
-    )
-}
-const FileTree = ({tree}) => {
+
+const FileTree = ({tree,clickFile}) => {
   return (
     <div className='filesContainer'>
         <div className="file_search">
             <input className='file_search_input' />
         </div>
-        <FileTreeNode fileName="/" Nodes={tree} />
+        <div className="files_folder">
+            <FileStructure tree={tree} path="" clickFile={clickFile} />
+        </div>
     </div>
   )
 }

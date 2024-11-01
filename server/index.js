@@ -35,32 +35,45 @@ io.on("connection",(socket)=>{
     socket.on('terminal:write',(data)=>{
         ptyProcess.write(data)
     })
+    socket.on("file:change",async({path,content})=>{
+        await fs.writeFile('./user'+path,content)
+    })
 })
 
 app.get('/files',async (req,res)=>{
     const fileTree= await generateFileTree('./user')
     return res.json({tree: fileTree})
 })
+app.get("/file/data",async(req,res)=>{
+    try{
+        const path=req.query.path
+        const fileData= await fs.readFile("./user"+path,'utf8')
+        return res.status(200).json({fileContent:fileData})
+    }catch(error){
+        return res.status(500).send({message:error.message})
+    }
+})
 server.listen(5000,()=>{
     console.log("Server is running...")
 })
 
 async function generateFileTree(directory){
-    const tree={}
-
-   async function builtTree(currentDir,currentTree){
+   async function builtTree(currentDir){
+    const tree=[]
         const files= await fs.readdir(currentDir)
         for(const file of files){
             const filePath= path.join(currentDir,file)
             const stat=await fs.stat(filePath)
             if(stat.isDirectory()){
-                currentTree[file]={}
-                await builtTree(filePath,currentTree[file])
+                if(file!='node_modules'){
+                    tree.push({name: file, children:await builtTree(filePath)})
+                }
             }else{
-                currentTree[file]=null
+                tree.push({name: file})
             }
         }
+        return tree
     }
-    await builtTree(directory,tree)
+    const tree=await builtTree(directory)
     return tree
 }

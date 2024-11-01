@@ -5,9 +5,12 @@
     min-width: 200px;
     box-sizing: border-box;
 }
+.files_folder{
+    max-height: 50vh;
+    overflow: scroll;
+}
 .file_search{
     width: 90%;
-    
 }
 .file_search_input{
     width: 100%;
