@@ -9,21 +9,12 @@
     display: flex;
     flex-direction: row;
 }
-.editor{
-    flex: 1;
-    padding: 2px;
-}
-.editor_file_header_name{
-    background-color: #f2f4f6;
-    padding: 5px;
-    height: 20px;
-    padding-left: 20px;
-    color: orange;
-}
 .files{
     display: flex;
-    background-color: red;
-    padding: 2px;
+    /* background-color: red; */
+    /* padding: 2px; */
+    border-right: 1px solid rgb(220, 218, 218);
+    border-top: 1px solid rgb(220, 218, 218);
 }
 li{
     list-style: none;

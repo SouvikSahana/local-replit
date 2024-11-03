@@ -4,7 +4,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { socket } from '../socket';
+import { socket } from '../config/socket';
 
 const CodeEditor = ({selectedFile}) => {
     const [code,setCode]= useState(null)
@@ -34,7 +34,7 @@ const CodeEditor = ({selectedFile}) => {
     useEffect(()=>{
         if(code && code!=prevCode){
             const timer= setTimeout(()=>{
-                console.log(code)
+                // console.log(code)
                 socket.emit("file:change",{
                     path: selectedFile.path,
                     content: code

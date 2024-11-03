@@ -1,7 +1,7 @@
 import React, { useEffect,useRef, useState } from 'react'
 import {Terminal as XTerminal} from "@xterm/xterm"
 import "@xterm/xterm/css/xterm.css"
-import {socket} from "../socket"
+import {socket} from "../config/socket"
 
 const Terminal = () => {
     const terminalRef= useRef()
@@ -17,14 +17,14 @@ const Terminal = () => {
         
         term.write('terminal $ ')
         term.onData(data=>{
-            socket.emit("terminal:write",data)
+            socket.emit("terminal:write-folder",data)
         })
-        socket.on('terminal:data',(data)=>{
+        socket.on('terminal:data-folder',(data)=>{
             term.write(data)
         })
 
         return ()=>{
-            socket.off('terminal:data')
+            socket.off('terminal:data-folder')
         }
 
     },[])
